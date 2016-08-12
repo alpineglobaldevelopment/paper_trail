@@ -105,14 +105,8 @@ module PaperTrail
             v.call(@record)
           elsif v.is_a?(Symbol) && @record.respond_to?(v, true)
             # If it is an attribute that is changing in an existing object,
-            # be sure to grab the current version.
-            if @record.has_attribute?(v) &&
-                @record.send("#{v}_changed?".to_sym) &&
-                data[:event] != "create"
-              @record.send("#{v}_was".to_sym)
-            else
-              @record.send(v)
-            end
+            # be sure to grab the latest version.
+            @record.send(v)
           else
             v
           end
